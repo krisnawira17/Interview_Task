@@ -198,14 +198,14 @@ function App() {
                 </p>
               )}
 
-              <label className="text-black font-semibold" for="deskripsi">
+              <label className="text-black font-semibold mb-2" for="deskripsi">
                 Deskripsi Claim
               </label>
-              <input
+              <textarea
                 name="deskripsi"
                 id="deskripsi"
                 onChange={handleOnChange}
-                className={`w-full border-b focus:outline-none focus:border-b-blue-500 transition-colors ease-in duration-200 border-black ${
+                className={`w-full border focus:outline-none focus:border-blue-500 rounded-md h-20 transition-colors ease-in duration-200 border-black ${
                   !form.deskripsi.errStatus && "mb-4"
                 }`}
                 placeholder="Cth: Kecelakaan kecil"
@@ -213,7 +213,7 @@ function App() {
                   handleEmptyValidation(e.target.name, e.target.value)
                 }
                 onFocus={(e) => handleOnFocus(e.target.name)}
-              ></input>
+              ></textarea>
               {form.deskripsi.errStatus && (
                 <p className="text-sm text-red-500 mb-4">
                   {form.deskripsi.message}
