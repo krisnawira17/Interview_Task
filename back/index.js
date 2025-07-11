@@ -1,11 +1,10 @@
 const express = require("express");
 const app = express();
-const PORT = 3001;
+const PORT = 3000;
 
 app.use(express.json());
 
 let claims = [];
-const authorize = true;
 
 app.get("/", (req, res) => {
   res.send("Test port");
@@ -13,32 +12,44 @@ app.get("/", (req, res) => {
 
 app.post("/claims", (req, res) => {
   const { policyNo, claimNumber, claimInfo, claimAmount } = req.body;
-  if (!authorize) {
-    return res.status(401).json({ message: "Unauthorized action" });
+
+  if (typeof claimAmount !== "number") {
+    res.status(400).json({ message: "claim amount must be a number" });
+    return;
+  }
+
+  if (typeof claimNumber !== "number") {
+    res.status(400).json({ message: "claim number must be a number" });
   }
 
   if (!policyNo) {
-    return res.status(401).json({ message: "please input policy number" });
+    res.status(400).json({ message: "please input policy number" });
+    return;
   }
+
   const newClaim = {
     id: claims.length + 1,
-    claimNumber: claimNumber,
-    claimInfo: claimInfo,
-    claimAmount: claimAmount,
+    policyNo,
+    claimNumber,
+    claimInfo,
+    claimAmount,
   };
-  claims.push(newClaim);
-  console.log(newClaim);
 
-  return res.send(200).json({ message: "Claim Created", value: newClaim });
+  claims.push(newClaim);
+
+  res.status(200).json({ message: "Claim Created", value: newClaim });
+  return;
 });
 
 app.get("/claim/:id", (req, res) => {
-  const id = req.params.id;
+  const id = parseInt(req.params.id);
 
-  const search = claims.find((claim) => claim.id === id);
-  if (!search) {
-    res.send(404).json({ message: "claim not found" });
+  const found = claims.find((claim) => claim.id === id);
+  if (!found) {
+    res.status(404).json({ message: "claim not found" });
   }
+  res.status(200).json({ message: "Claim found", value: found });
+  return;
 });
 
 app.listen(PORT, () => {

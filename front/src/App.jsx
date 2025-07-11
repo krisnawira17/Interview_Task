@@ -2,7 +2,6 @@ import { useEffect } from "react";
 import { useState } from "react";
 
 function App() {
-  const defaultValue = {};
   const [form, setForm] = useState({
     nama: { value: "", errStatus: false, message: "" },
     nomorPolis: {
@@ -81,10 +80,6 @@ function App() {
     }
   };
 
-  const handleBack = () => {
-    setSubmitted(false);
-  };
-
   const handleEmptyValidation = (name, value) => {
     setForm((prev) => ({
       ...prev,
@@ -108,27 +103,29 @@ function App() {
   };
 
   return (
-    <div className="flex flex-row p-4">
-      <div className="w-full">
-        <p className="text-center mx-auto text-green-400 mb-4">
+    <div className="flex flex-col">
+      <div className="flex  justify-center w-full bg-blue-400 p-4">
+        <p className="text-white font-bold">App X</p>
+      </div>
+      <div className="w-full p-6">
+        <p className="text-center mx-auto text-green-black font-semibold mb-4">
           Form Pengajuan
         </p>
         {!submitted ? (
-          <form
-            className="flex flex-col gap-2 bg-white"
-            onSubmit={handleSubmit}
-          >
-            <div className="flex flex-col p-4 bg-white drop-shadow-2xl">
-              <label for="nama" className="mb-2 text-purple-600">
+          <form className="flex flex-col" onSubmit={handleSubmit}>
+            <div className="flex flex-col p-2 ">
+              <label for="nama" className="mb-2 text-black font-semibold">
                 Nama lengkap
               </label>
               <input
                 name="nama"
                 id="nama"
                 type={"text"}
-                className="w-full border-b focus:outline-none border-black"
+                className={`w-full border-b focus:outline-none focus:border-b-blue-500 transition-colors ease-in duration-200 border-black ${
+                  !form.nama.errStatus && "mb-8"
+                }`}
                 onChange={handleOnChange}
-                placeholder="input nama lengkap"
+                placeholder="Cth : Johny Doe"
                 onBlur={(e) =>
                   handleEmptyValidation(e.target.name, e.target.value)
                 }
@@ -138,7 +135,7 @@ function App() {
                 <p className="text-sm text-red-500 mb-4">{form.nama.message}</p>
               )}
 
-              <label for="polis" className="mb-2 text-purple-600">
+              <label for="polis" className="mb-2 text-black font-semibold">
                 Nomor Polis
               </label>
               <input
@@ -146,9 +143,11 @@ function App() {
                 id="polis"
                 type={"tel"}
                 maxLength="16"
-                className="w-full border-b focus:outline-none border-black"
+                className={`w-full border-b focus:outline-none focus:border-b-blue-500 transition-colors ease-in duration-200 border-black ${
+                  !form.nomorPolis.errStatus && "mb-8"
+                }`}
                 onChange={handleOnChange}
-                placeholder="input nomor polis"
+                placeholder="Cth: 1234567890123456"
                 onBlur={(e) =>
                   handleEmptyValidation(e.target.name, e.target.value)
                 }
@@ -160,29 +159,34 @@ function App() {
                 </p>
               )}
 
-              <label for="foto" className="mb-2 text-purple-600">
+              <label for="foto" className="mb-2 text-black font-semibold">
                 Upload Foto Kendaraan
               </label>
               {form.fotoKendaraan.value && (
                 <img className="my-2 w-[10rem] mx-auto" src={filePreview} />
               )}
-              <div className="flex flex-row gap-2">
+              <div
+                className={`flex flex-row gap-2 ${
+                  !form.fotoKendaraan.errStatus && "mb-8"
+                }`}
+              >
                 <input
                   name="fotoKendaraan"
                   id="foto"
                   type="file"
                   onChange={handleSelectFile}
-                  className="w-full border focus:outline-none border-black cursor-pointer"
                   hidden
                 ></input>
-                <p className="border p-1 border-gray-300 bg-gray-300 text-gray-600 w-3/4 cursor-default">
+                <p
+                  className={`border p-1 border-gray-300 bg-gray-300 text-gray-600 w-3/4 cursor-default rounded-md`}
+                >
                   {form.fotoKendaraan.value
                     ? form.fotoKendaraan.value.name
                     : "Browse..."}
                 </p>
                 <label
                   for="foto"
-                  className="w-1/4border border-blue-500 p-1 text-center rounded-md bg-blue-500 text-white drop-shadow-md cursor-pointer"
+                  className="w-1/4border border-blue-500 p-2 text-center rounded-md bg-blue-500 text-white drop-shadow-md cursor-pointer"
                 >
                   Upload
                 </label>
@@ -194,15 +198,17 @@ function App() {
                 </p>
               )}
 
-              <label className="text-purple-600" for="deskripsi">
+              <label className="text-black font-semibold" for="deskripsi">
                 Deskripsi Claim
               </label>
               <input
                 name="deskripsi"
                 id="deskripsi"
                 onChange={handleOnChange}
-                className="w-full border-b focus:outline-none border-black"
-                placeholder="input deskripsi"
+                className={`w-full border-b focus:outline-none focus:border-b-blue-500 transition-colors ease-in duration-200 border-black ${
+                  !form.deskripsi.errStatus && "mb-4"
+                }`}
+                placeholder="Cth: Kecelakaan kecil"
                 onBlur={(e) =>
                   handleEmptyValidation(e.target.name, e.target.value)
                 }
@@ -214,10 +220,10 @@ function App() {
                 </p>
               )}
             </div>
-            <div className="flex flex-row justify-between gap-2 mt-2">
+            <div className="flex flex-row justify-between gap-2 mt-4">
               <button
                 type="submit"
-                className="border border-blue-400 bg-blue-400 rounded-md  p-2 w-full cursor-pointer text-white"
+                className="  bg-blue-400 rounded-md drop-shadow-md  p-2 w-full cursor-pointer text-white"
               >
                 SUBMIT
               </button>
@@ -228,17 +234,24 @@ function App() {
             <p className="font-bold text-[24px] whitespace-normal break-words">
               {form.nama.value}
             </p>
-            <p className="font-semibold text-[18px]">{form.nomorPolis.value}</p>
+            <div className="flex flex-col">
+              <label className="font-semibold text-[18px]">Nomor Polis</label>
+              <p className="text-[18px]">{form.nomorPolis.value}</p>
+            </div>
+
             <div className="flex flex-col gap-1">
               <img className="my-2 w-[20rem] mx-auto" src={filePreview} />
-              <p className="text-[12px] whitespace-normal break-words">
+              <p className="text-[12px] mx-auto whitespace-normal break-words">
                 {form.fotoKendaraan.value.name}
               </p>
             </div>
 
-            <p className="text-[18px] whitespace-normal break-words">
-              {form.deskripsi.value}
-            </p>
+            <div className="flex flex-col">
+              <label className="font-semibold text-[18px]">Deskripsi</label>
+              <p className="text-[18px] whitespace-normal break-words mb-4">
+                {form.deskripsi.value}
+              </p>
+            </div>
           </div>
         )}
 
