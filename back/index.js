@@ -48,6 +48,7 @@ app.get("/claim/:id", (req, res) => {
   const found = claims.find((claim) => claim.id === id);
   if (!found) {
     res.status(404).json({ message: "claim not found" });
+    return;
   }
   res.status(200).json({ message: "Claim found", value: found });
   return;
