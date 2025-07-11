@@ -20,10 +20,11 @@ app.post("/claims", (req, res) => {
 
   if (typeof claimNumber !== "number") {
     res.status(400).json({ message: "claim number must be a number" });
+    return;
   }
 
-  if (!policyNo) {
-    res.status(400).json({ message: "please input policy number" });
+  if (!policyNo || !claimNumber || !claimInfo || !claimAmount) {
+    res.status(400).json({ message: "please complete the form" });
     return;
   }
 
